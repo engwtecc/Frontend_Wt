@@ -162,10 +162,10 @@ export default function AdminVerRelatorio() {
             {relatorio.fotos.map((foto: string, index: number) => (
               <img
                 key={index}
-                src={`http://localhost:8000${foto}`}
+                src={foto}
                 alt="evidencia"
                 onClick={() =>
-                  setImagemAberta(`http://localhost:8000${foto}`)
+                  setImagemAberta(foto)
                 }
                 style={{
                   width: "150px",
@@ -201,4 +201,5 @@ export default function AdminVerRelatorio() {
       </Dialog>
     </>
   );
+
 }
