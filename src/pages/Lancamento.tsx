@@ -413,10 +413,10 @@ async function excluirFoto(id: string) {
       }}
     >
       <img
-  src={`http://localhost:8000${foto.url}`}
+  src={foto.url}
   alt="evidencia"
   onClick={() =>
-    setImagemAberta(`http://localhost:8000${foto.url}`)
+    setImagemAberta(foto.url)
   }
   style={{
     width: "150px",
@@ -537,3 +537,4 @@ async function excluirFoto(id: string) {
     </>
   );
 }
+
