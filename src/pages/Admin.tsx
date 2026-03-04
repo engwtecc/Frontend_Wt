@@ -257,7 +257,10 @@ function formatarHoras(valor: number) {
             if (dataFim) params.append("data_fim", dataFim.format("YYYY-MM-DD"));
             if (projetoSelecionado) params.append("projeto_id", projetoSelecionado);
 
-            window.open(`${import.meta.env.VITE_API_URL}/admin/pdf/${r.id}`, "_blank");
+            window.open(
+              `${import.meta.env.VITE_API_URL}/admin/pdf-massa?${params.toString()}`,
+              "_blank"
+            );
           }}
         >
           PDF em Massa
@@ -458,4 +461,5 @@ function formatarHoras(valor: number) {
     </>
   );
 }
+
 
