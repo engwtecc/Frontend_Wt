@@ -194,7 +194,7 @@ function formatarHoras(valor: number) {
         {/* DROPDOWN FUNCIONÁRIOS */}
         <TextField
           select
-          label="Funcionário"
+          label="Colaborador"
           value={colaborador}
           onChange={(e) => setColaborador(e.target.value)}
           sx={{ mr: 2, minWidth: 200 }}
@@ -459,6 +459,7 @@ function formatarHoras(valor: number) {
     </>
   );
 }
+
 
 
 
