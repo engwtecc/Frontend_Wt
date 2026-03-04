@@ -70,9 +70,7 @@ export default function Admin() {
   }
 
   async function carregarFuncionarios() {
-    const response = await api.get("/usuarios", {
-      params: { perfil: "funcionario" },
-    });
+    const response = await api.get("/usuarios");
 
     setFuncionarios(response.data);
   }
@@ -461,5 +459,6 @@ function formatarHoras(valor: number) {
     </>
   );
 }
+
 
 
