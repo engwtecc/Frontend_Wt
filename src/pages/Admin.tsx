@@ -14,6 +14,7 @@ import {
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 //import { useNavigate } from "react-router-dom";
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Dialog,
   DialogTitle,
@@ -134,7 +135,7 @@ async function excluirAbatimento(id: string) {
   abrirHistorico(colaboradorSelecionado);
   carregarBancoTotal();
 }
-function confirmarExclusao(id: string) {
+function sao(id: string) {
   setConfirmarId(id);
 }
 
@@ -340,6 +341,7 @@ function formatarHoras(valor: number) {
             <Button
               size="small"
               color="error"
+              startIcon={<DeleteIcon />}
               onClick={() => confirmarExclusao(r.id)}
             >
               Excluir
@@ -514,6 +516,7 @@ function formatarHoras(valor: number) {
     </>
   );
 }
+
 
 
 
