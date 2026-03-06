@@ -137,9 +137,7 @@ async function excluirAbatimento(id: string) {
 function confirmarExclusao(id: string) {
   setConfirmarId(id);
 }
-function confirmarExclusao(id: string) {
-  setConfirmarId(id);
-}
+
 async function excluirRelatorio() {
   if (!confirmarId) return;
 
@@ -148,7 +146,7 @@ async function excluirRelatorio() {
 
     setConfirmarId(null);
 
-    carregarRelatorios(); // recarrega lista
+    carregar(); // recarrega lista
 
   } catch (error) {
     alert("Erro ao excluir relatório");
@@ -342,7 +340,7 @@ function formatarHoras(valor: number) {
             <Button
               size="small"
               color="error"
-              onClick={() => confirmarExclusao(relatorio.id)}
+              onClick={() => confirmarExclusao(r.id)}
             >
               Excluir
             </Button>
@@ -516,6 +514,7 @@ function formatarHoras(valor: number) {
     </>
   );
 }
+
 
 
 
