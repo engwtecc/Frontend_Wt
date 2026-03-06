@@ -45,7 +45,7 @@ export default function Admin() {
   const [modalOpen, setModalOpen] = useState(false);
   const [abatimentos, setAbatimentos] = useState<any[]>([]);
   const [colaboradorSelecionado, setColaboradorSelecionado] = useState("");
-
+  const [confirmarId, setConfirmarId] = useState<string | null>(null);
   async function carregar() {
     const response = await api.get("/admin/relatorios", {
       params: {
@@ -134,6 +134,27 @@ async function excluirAbatimento(id: string) {
   abrirHistorico(colaboradorSelecionado);
   carregarBancoTotal();
 }
+function confirmarExclusao(id: string) {
+  setConfirmarId(id);
+}
+function confirmarExclusao(id: string) {
+  setConfirmarId(id);
+}
+async function excluirRelatorio() {
+  if (!confirmarId) return;
+
+  try {
+    await api.delete(`/admin/lancamento/${confirmarId}`);
+
+    setConfirmarId(null);
+
+    carregarRelatorios(); // recarrega lista
+
+  } catch (error) {
+    alert("Erro ao excluir relatório");
+  }
+}
+  
 function formatarHoras(valor: number) {
   const totalMinutos = Math.round(valor * 60)
   const horas = Math.floor(totalMinutos / 60)
@@ -318,7 +339,13 @@ function formatarHoras(valor: number) {
             >
               Verificar
             </Button>
-
+            <Button
+              size="small"
+              color="error"
+              onClick={() => confirmarExclusao(relatorio.id)}
+            >
+              Excluir
+            </Button>
             <Button
               size="small"
               onClick={() =>
@@ -456,9 +483,40 @@ function formatarHoras(valor: number) {
     <Button onClick={() => setModalOpen(false)}>Fechar</Button>
   </DialogActions>
 </Dialog>
+
+      
+      <Dialog
+  open={!!confirmarId}
+  onClose={() => setConfirmarId(null)}
+>
+  <div style={{ padding: 20 }}>
+
+    <h3>Confirmar exclusão</h3>
+
+    <p>Deseja realmente excluir este relatório?</p>
+
+    <Button
+      variant="contained"
+      color="error"
+      onClick={excluirRelatorio}
+      sx={{ mr: 2 }}
+    >
+      Excluir
+    </Button>
+
+    <Button
+      variant="outlined"
+      onClick={() => setConfirmarId(null)}
+    >
+      Cancelar
+    </Button>
+
+  </div>
+</Dialog>
     </>
   );
 }
+
 
 
 
