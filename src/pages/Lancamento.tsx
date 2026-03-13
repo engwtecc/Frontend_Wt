@@ -330,13 +330,23 @@ async function cancelarEnvio() {
 
           {(status === "rascunho" || status === "reprovado") && (
             <TableCell>
-              <Button
-                size="small"
-                color="error"
-                onClick={() => excluirBloco(b.id)}
-              >
-                Excluir
-              </Button>
+            
+            <Button
+              size="small"
+              onClick={() => abrirEdicao(b)}
+              sx={{ mr: 1 }}
+            >
+              Editar
+            </Button>
+            
+            <Button
+              size="small"
+              color="error"
+              onClick={() => excluir(b.id)}
+            >
+              Excluir
+            </Button>
+            
             </TableCell>
           )}
         </TableRow>
@@ -560,6 +570,7 @@ async function cancelarEnvio() {
     </>
   );
 }
+
 
 
 
