@@ -40,6 +40,8 @@ export default function Lancamento() {
   const [fotos, setFotos] = useState<any[]>([]);
   const [imagemAberta, setImagemAberta] = useState<string | null>(null);
   const [folga, setFolga] = useState(false);
+  const [modalEditar, setModalEditar] = useState(false)
+  const [blocoEditando, setBlocoEditando] = useState<any>(null)
 
   // 🔒 Proteção de rota
   useEffect(() => {
@@ -177,6 +179,21 @@ async function cancelarEnvio() {
     }
   }
 
+  async function salvarEdicao(){
+
+  await api.put(`/bloco/${blocoEditando.id}`, blocoEditando)
+
+  setModalEditar(false)
+
+  carregar()   // recarrega lista
+}
+  function abrirEdicao(bloco:any){
+  setBlocoEditando(bloco)
+  setModalEditar(true)
+}
+
+
+  
   function formatarHoras(valor: number) {
   if (!valor) return "00:00"
 
@@ -574,3 +591,53 @@ async function cancelarEnvio() {
 
 
 
+<Dialog open={modalEditar} onClose={()=>setModalEditar(false)}>
+
+<DialogTitle>Editar Atividade</DialogTitle>
+
+<DialogContent>
+
+<TextField
+label="Início"
+type="time"
+value={blocoEditando?.hora_inicio?.slice(11,16)}
+onChange={(e)=>setBlocoEditando({
+  ...blocoEditando,
+  hora_inicio:e.target.value
+})}
+/>
+
+<TextField
+label="Fim"
+type="time"
+value={blocoEditando?.hora_fim?.slice(11,16)}
+onChange={(e)=>setBlocoEditando({
+  ...blocoEditando,
+  hora_fim:e.target.value
+})}
+/>
+
+<TextField
+label="Descrição"
+value={blocoEditando?.descricao}
+onChange={(e)=>setBlocoEditando({
+  ...blocoEditando,
+  descricao:e.target.value
+})}
+/>
+
+</DialogContent>
+
+<DialogActions>
+
+<Button onClick={()=>setModalEditar(false)}>
+Cancelar
+</Button>
+
+<Button variant="contained" onClick={salvarEdicao}>
+Salvar
+</Button>
+
+</DialogActions>
+
+</Dialog>
