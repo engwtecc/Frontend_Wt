@@ -61,6 +61,7 @@ export default function Lancamento() {
       setStatus(response.data.status || "rascunho");
       setResumo(response.data.resumo || null);
       setFeriado(response.data.feriado || false);
+      setFolga(response.data.folga || false);
       setMotivoReprovacao(response.data.motivo_reprovacao || "");
       setFotos(response.data.fotos || []);
       setLancamentoId(response.data.id || null);
@@ -537,4 +538,5 @@ async function excluirFoto(id: string) {
     </>
   );
 }
+
 
