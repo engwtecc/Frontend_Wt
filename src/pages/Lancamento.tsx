@@ -154,7 +154,19 @@ async function excluirFoto(id: string) {
     alert(error.response?.data?.detail || "Erro ao excluir foto");
   }
 }
+  
+async function cancelarEnvio() {
+  try {
+    await api.put(`/cancelar/${usuario?.id}/${data}`);
 
+    alert("Envio cancelado. Você pode editar novamente.");
+
+    carregar();
+
+  } catch (error: any) {
+    alert(error.response?.data?.detail || "Erro ao cancelar envio");
+  }
+}
   async function finalizarDia() {
     try {
       await api.put(`/finalizar/${usuario?.id}/${data}`);
@@ -505,6 +517,16 @@ async function excluirFoto(id: string) {
     </Typography>
   </Paper>
 )}
+  {status === "enviado" && (
+  <Button
+    variant="contained"
+    color="warning"
+    sx={{ ml: 2 }}
+    onClick={cancelarEnvio}
+  >
+    Cancelar Envio
+  </Button>
+)}
 
 {/* MOTIVO DE REPROVAÇÃO (mantém até virar aprovado) */}
 {motivoReprovacao && status !== "aprovado" && (
@@ -538,5 +560,6 @@ async function excluirFoto(id: string) {
     </>
   );
 }
+
 
 
