@@ -48,7 +48,9 @@ export default function Lancamento() {
   const [blocoEditando, setBlocoEditando] = useState<any>(null)
   const [projetos, setProjetos] = useState<any[]>([])
   const [tipos, setTipos] = useState<any[]>([])
-
+  const [horaInicio, setHoraInicio] = useState("")
+  const [horaFim, setHoraFim] = useState("")
+  
   // 🔒 Proteção de rota
   useEffect(() => {
     if (!usuario) {
@@ -198,8 +200,8 @@ async function cancelarEnvio() {
 
   async function salvarEdicao(){
   
-    const inicio = `${data}T${blocoEditando.hora_inicio}:00`
-    const fim = `${data}T${blocoEditando.hora_fim}:00`
+    const inicio = `${data}T${horaInicio}:00`
+    const fim = `${data}T${horaFim}:00`
   
     await api.put(`/bloco/${blocoEditando.id}`, {
       ...blocoEditando,
@@ -211,10 +213,20 @@ async function cancelarEnvio() {
   
     carregar()
   }
+  
+    setModalEditar(false)
+  
+    carregar()
+  }
   function abrirEdicao(bloco:any){
-  setBlocoEditando(bloco)
-  setModalEditar(true)
-}
+  
+    setBlocoEditando(bloco)
+  
+    setHoraInicio(bloco.hora_inicio.slice(11,16))
+    setHoraFim(bloco.hora_fim.slice(11,16))
+  
+    setModalEditar(true)
+  }
 
 
   
@@ -619,11 +631,8 @@ label="Início"
 type="time"
 fullWidth
 sx={{mt:1}}
-value={blocoEditando?.hora_inicio?.slice(11,16) || ""}
-onChange={(e)=>setBlocoEditando({
-  ...blocoEditando,
-  hora_inicio:e.target.value
-})}
+value={horaInicio}
+onChange={(e)=>setHoraInicio(e.target.value)}
 />
 
 <TextField
@@ -631,11 +640,8 @@ label="Fim"
 type="time"
 fullWidth
 sx={{mt:2}}
-value={blocoEditando?.hora_fim?.slice(11,16) || ""}
-onChange={(e)=>setBlocoEditando({
-  ...blocoEditando,
-  hora_fim:e.target.value
-})}
+value={horaFim}
+onChange={(e)=>setHoraFim(e.target.value)}
 />
 
 <TextField
