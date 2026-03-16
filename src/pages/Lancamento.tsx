@@ -359,7 +359,7 @@ async function cancelarEnvio() {
             <Button
               size="small"
               color="error"
-              onClick={() => excluir(b.id)}
+              onClick={() => excluirBloco(b.id)}
             >
               Excluir
             </Button>
@@ -583,6 +583,61 @@ async function cancelarEnvio() {
       }}
     />
   )}
+</Dialog>      
+{/* MODAL EDITAR BLOCO */}
+<Dialog open={modalEditar} onClose={()=>setModalEditar(false)}>
+
+<DialogTitle>Editar Atividade</DialogTitle>
+
+<DialogContent>
+
+<TextField
+label="Início"
+type="time"
+value={
+  blocoEditando?.hora_inicio
+  ? new Date(blocoEditando.hora_inicio).toISOString().slice(11,16)
+  : ""
+}
+onChange={(e)=>setBlocoEditando({
+  ...blocoEditando,
+  hora_inicio:e.target.value
+})}
+/>
+
+<TextField
+label="Fim"
+type="time"
+value={blocoEditando?.hora_fim?.slice(11,16)}
+onChange={(e)=>setBlocoEditando({
+  ...blocoEditando,
+  hora_fim:e.target.value
+})}
+/>
+
+<TextField
+label="Descrição"
+value={blocoEditando?.descricao}
+onChange={(e)=>setBlocoEditando({
+  ...blocoEditando,
+  descricao:e.target.value
+})}
+/>
+
+</DialogContent>
+
+<DialogActions>
+
+<Button onClick={()=>setModalEditar(false)}>
+Cancelar
+</Button>
+
+<Button variant="contained" onClick={salvarEdicao}>
+Salvar
+</Button>
+
+</DialogActions>
+
 </Dialog>
 </>
 );
