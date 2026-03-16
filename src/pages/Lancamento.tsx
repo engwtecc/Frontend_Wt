@@ -236,7 +236,11 @@ async function cancelarEnvio() {
   async function duplicarBloco(){
 
     if(!blocoEditando) return
-  
+
+    if(temConflito(horaInicio, horaFim)){
+      alert("Conflito de horário com outra atividade.")
+      return
+    }
     const inicio = `${data}T${horaInicio}:00`
     const fim = `${data}T${horaFim}:00`
     
