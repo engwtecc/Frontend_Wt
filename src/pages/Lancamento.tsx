@@ -584,7 +584,8 @@ async function cancelarEnvio() {
     />
   )}
 </Dialog>
-      
+
+{/* MODAL EDITAR BLOCO */}
 <Dialog open={modalEditar} onClose={()=>setModalEditar(false)}>
 
 <DialogTitle>Editar Atividade</DialogTitle>
@@ -635,8 +636,7 @@ Salvar
 </DialogActions>
 
 </Dialog>
-    </>
-  );
+
+</>
+);
 }
-
-
