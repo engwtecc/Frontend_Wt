@@ -199,6 +199,11 @@ async function cancelarEnvio() {
   }
 
   async function salvarEdicao(){
+
+    if(temConflito(horaInicio, horaFim)){
+      alert("Conflito de horário com outra atividade.")
+      return
+    }
   
     const inicio = `${data}T${horaInicio}:00`
     const fim = `${data}T${horaFim}:00`
@@ -213,9 +218,14 @@ async function cancelarEnvio() {
   
     carregar()
   }
+  
   function abrirEdicao(bloco:any){
   
-    setBlocoEditando(bloco)
+    setBlocoEditando({
+      ...bloco,
+      projeto_id: bloco.projeto_id,
+      tipo_atividade_id: bloco.tipo_atividade_id
+    })
   
     setHoraInicio(bloco.hora_inicio.slice(11,16))
     setHoraFim(bloco.hora_fim.slice(11,16))
@@ -223,7 +233,49 @@ async function cancelarEnvio() {
     setModalEditar(true)
   }
 
+  async function duplicarBloco(){
 
+    if(!blocoEditando) return
+  
+    const inicio = `${data}T${horaInicio}:00`
+    const fim = `${data}T${horaFim}:00`
+    
+    await api.post("/lancamento", {
+      colaborador_id: usuario?.id,
+      data,
+      blocos: [{
+        projeto_id: blocoEditando.projeto_id,
+        tipo_id: blocoEditando.tipo_atividade_id,
+        inicio,
+        fim,
+        descricao: blocoEditando.descricao
+      }]
+    })
+  
+    setModalEditar(false)
+  
+    carregar()
+  }
+  function temConflito(inicio:string, fim:string){
+  
+    const novoInicio = new Date(`${data}T${inicio}:00`)
+    const novoFim = new Date(`${data}T${fim}:00`)
+  
+    for(const b of blocos){
+  
+      if(blocoEditando && b.id === blocoEditando.id) continue
+  
+      const existenteInicio = new Date(b.hora_inicio)
+      const existenteFim = new Date(b.hora_fim)
+  
+      if(novoInicio < existenteFim && novoFim > existenteInicio){
+        return true
+      }
+  
+    }
+  
+    return false
+  }
   
   function formatarHoras(valor: number) {
   if (!valor) return "00:00"
@@ -693,7 +745,14 @@ onChange={(e)=>setBlocoEditando({
 <Button onClick={()=>setModalEditar(false)}>
 Cancelar
 </Button>
-
+  
+<Button
+variant="outlined"
+onClick={duplicarBloco}
+>
+Duplicar
+</Button>
+  
 <Button variant="contained" onClick={salvarEdicao}>
 Salvar
 </Button>
