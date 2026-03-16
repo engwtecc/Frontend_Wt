@@ -213,11 +213,6 @@ async function cancelarEnvio() {
   
     carregar()
   }
-  
-    setModalEditar(false)
-  
-    carregar()
-  }
   function abrirEdicao(bloco:any){
   
     setBlocoEditando(bloco)
