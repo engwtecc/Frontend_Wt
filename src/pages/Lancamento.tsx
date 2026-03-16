@@ -197,13 +197,20 @@ async function cancelarEnvio() {
   }
 
   async function salvarEdicao(){
-
-  await api.put(`/bloco/${blocoEditando.id}`, blocoEditando)
-
-  setModalEditar(false)
-
-  carregar()   // recarrega lista
-}
+  
+    const inicio = `${data}T${blocoEditando.hora_inicio}:00`
+    const fim = `${data}T${blocoEditando.hora_fim}:00`
+  
+    await api.put(`/bloco/${blocoEditando.id}`, {
+      ...blocoEditando,
+      hora_inicio: inicio,
+      hora_fim: fim
+    })
+  
+    setModalEditar(false)
+  
+    carregar()
+  }
   function abrirEdicao(bloco:any){
   setBlocoEditando(bloco)
   setModalEditar(true)
@@ -612,11 +619,7 @@ label="Início"
 type="time"
 fullWidth
 sx={{mt:1}}
-value={
-  blocoEditando?.hora_inicio
-  ? new Date(blocoEditando.hora_inicio).toISOString().slice(11,16)
-  : ""
-}
+value={blocoEditando?.hora_inicio?.slice(11,16) || ""}
 onChange={(e)=>setBlocoEditando({
   ...blocoEditando,
   hora_inicio:e.target.value
@@ -628,11 +631,7 @@ label="Fim"
 type="time"
 fullWidth
 sx={{mt:2}}
-value={
-  blocoEditando?.hora_fim
-  ? new Date(blocoEditando.hora_fim).toISOString().slice(11,16)
-  : ""
-}
+value={blocoEditando?.hora_fim?.slice(11,16) || ""}
 onChange={(e)=>setBlocoEditando({
   ...blocoEditando,
   hora_fim:e.target.value
