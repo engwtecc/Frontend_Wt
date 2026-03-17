@@ -47,6 +47,9 @@ export default function Admin() {
   const [abatimentos, setAbatimentos] = useState<any[]>([]);
   const [colaboradorSelecionado, setColaboradorSelecionado] = useState("");
   const [confirmarId, setConfirmarId] = useState<string | null>(null);
+  const [openConfirm, setOpenConfirm] = useState(false)
+  const [idParaExcluir, setIdParaExcluir] = useState<string | null>(null)
+  
   async function carregar() {
     const response = await api.get("/admin/relatorios", {
       params: {
@@ -139,6 +142,23 @@ function sao(id: string) {
   setConfirmarId(id);
 }
 
+  /// novo botão
+async function excluirConfirmado() {
+
+  if (!idParaExcluir) return
+
+  try {
+    await api.delete(`/admin/lancamento/${idParaExcluir}`)
+
+    setOpenConfirm(false)
+    setIdParaExcluir(null)
+
+    await carregarRelatorios()
+
+  } catch (error: any) {
+    alert(error.response?.data?.detail || "Erro ao excluir")
+  }
+}
 async function excluirRelatorio() {
   if (!confirmarId) return;
 
@@ -358,7 +378,11 @@ function formatarHoras(valor: number) {
               size="small"
               color="error"
               startIcon={<DeleteIcon />}
-              onClick={() => confirmarExclusao(r.id)}
+              //onClick={() => confirmarExclusao(r.id)}
+              onClick={() => {
+                setIdParaExcluir(id)
+                setOpenConfirm(true)
+              }}
             >
               Excluir
             </Button>
@@ -528,6 +552,31 @@ function formatarHoras(valor: number) {
     </Button>
 
   </div>
+</Dialog>
+      <Dialog open={openConfirm} onClose={() => setOpenConfirm(false)}>
+
+  <DialogTitle>Confirmar Exclusão</DialogTitle>
+
+  <DialogContent>
+    Tem certeza que deseja excluir este relatório?
+  </DialogContent>
+
+  <DialogActions>
+
+    <Button onClick={() => setOpenConfirm(false)}>
+      Cancelar
+    </Button>
+
+    <Button
+      color="error"
+      variant="contained"
+      onClick={excluirConfirmado}
+    >
+      Excluir
+    </Button>
+
+  </DialogActions>
+
 </Dialog>
     </>
   );
