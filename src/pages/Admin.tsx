@@ -153,7 +153,23 @@ async function excluirRelatorio() {
     alert("Erro ao excluir relatório");
   }
 }
-  
+async function confirmarExclusao(id: string) {
+
+  const confirmar = window.confirm("Deseja realmente excluir este relatório?")
+
+  if (!confirmar) return
+
+  try {
+    await api.delete(`/admin/lancamento/${id}`)
+
+    alert("Relatório excluído com sucesso")
+
+    carregarRelatorios() // ou sua função de refresh
+
+  } catch (error: any) {
+    alert(error.response?.data?.detail || "Erro ao excluir")
+  }
+}
 function formatarHoras(valor: number) {
   const totalMinutos = Math.round(valor * 60)
   const horas = Math.floor(totalMinutos / 60)
