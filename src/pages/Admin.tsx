@@ -14,6 +14,10 @@ import {
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 //import { useNavigate } from "react-router-dom";
+import CheckIcon from "@mui/icons-material/Check";
+import CloseIcon from "@mui/icons-material/Close";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Dialog,
@@ -347,6 +351,7 @@ function formatarHoras(valor: number) {
               <Button
                 size="small"
                 color="success"
+                startIcon={<CheckIcon />}
                 onClick={() => aprovar(r.id)}
                 sx={{ mr: 1 }}
               >
@@ -358,6 +363,7 @@ function formatarHoras(valor: number) {
               <Button
                 size="small"
                 color="error"
+                startIcon={<CloseIcon />}
                 onClick={() => reprovar(r.id)}
                 sx={{ mr: 1 }}
               >
@@ -367,12 +373,12 @@ function formatarHoras(valor: number) {
 
             <Button
               size="small"
+              color="error"
+              startIcon={<CloseIcon />}
+              onClick={() => reprovar(r.id)}
               sx={{ mr: 1 }}
-              component="a"
-              href={`/admin/ver/${r.id}`}
-              target="_blank"
             >
-              Verificar
+              Reprovar
             </Button>
             <Button
               size="small"
@@ -388,6 +394,7 @@ function formatarHoras(valor: number) {
             </Button>
             <Button
               size="small"
+              startIcon={<PictureAsPdfIcon />}
               onClick={() =>
                 window.open(`${import.meta.env.VITE_API_URL}/admin/pdf/${r.id}`, "_blank")
               }
