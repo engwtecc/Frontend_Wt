@@ -46,7 +46,7 @@ export default function Admin() {
   const [modalOpen, setModalOpen] = useState(false);
   const [abatimentos, setAbatimentos] = useState<any[]>([]);
   const [colaboradorSelecionado, setColaboradorSelecionado] = useState("");
-  const [confirmarId, setConfirmarId] = useState<string | null>(null);
+  //const [confirmarId, setConfirmarId] = useState<string | null>(null);
   const [openConfirm, setOpenConfirm] = useState(false)
   const [idParaExcluir, setIdParaExcluir] = useState<string | null>(null)
   
@@ -138,9 +138,9 @@ async function excluirAbatimento(id: string) {
   abrirHistorico(colaboradorSelecionado);
   carregarBancoTotal();
 }
-function sao(id: string) {
-  setConfirmarId(id);
-}
+//function sao(id: string) {
+  //setConfirmarId(id);
+//}
 
   /// novo botão
 async function excluirConfirmado() {
@@ -153,13 +153,13 @@ async function excluirConfirmado() {
     setOpenConfirm(false)
     setIdParaExcluir(null)
 
-    await carregarRelatorios()
+    carregar() // 🔥 usa essa, não carregarRelatorios
 
   } catch (error: any) {
     alert(error.response?.data?.detail || "Erro ao excluir")
   }
 }
-async function excluirRelatorio() {
+/*async function excluirRelatorio() {
   if (!confirmarId) return;
 
   try {
@@ -189,7 +189,7 @@ async function confirmarExclusao(id: string) {
   } catch (error: any) {
     alert(error.response?.data?.detail || "Erro ao excluir")
   }
-}
+}*/
 function formatarHoras(valor: number) {
   const totalMinutos = Math.round(valor * 60)
   const horas = Math.floor(totalMinutos / 60)
@@ -380,7 +380,7 @@ function formatarHoras(valor: number) {
               startIcon={<DeleteIcon />}
               //onClick={() => confirmarExclusao(r.id)}
               onClick={() => {
-                setIdParaExcluir(id)
+                setIdParaExcluir(r.id)
                 setOpenConfirm(true)
               }}
             >
@@ -525,10 +525,7 @@ function formatarHoras(valor: number) {
 </Dialog>
 
       
-      <Dialog
-  open={!!confirmarId}
-  onClose={() => setConfirmarId(null)}
->
+
   <div style={{ padding: 20 }}>
 
     <h3>Confirmar exclusão</h3>
