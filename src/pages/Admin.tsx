@@ -526,30 +526,7 @@ function formatarHoras(valor: number) {
 
       
 
-  <div style={{ padding: 20 }}>
 
-    <h3>Confirmar exclusão</h3>
-
-    <p>Deseja realmente excluir este relatório?</p>
-
-    <Button
-      variant="contained"
-      color="error"
-      onClick={excluirRelatorio}
-      sx={{ mr: 2 }}
-    >
-      Excluir
-    </Button>
-
-    <Button
-      variant="outlined"
-      onClick={() => setConfirmarId(null)}
-    >
-      Cancelar
-    </Button>
-
-  </div>
-</Dialog>
       <Dialog open={openConfirm} onClose={() => setOpenConfirm(false)}>
 
   <DialogTitle>Confirmar Exclusão</DialogTitle>
