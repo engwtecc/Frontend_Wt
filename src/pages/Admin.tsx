@@ -373,12 +373,13 @@ function formatarHoras(valor: number) {
 
             <Button
               size="small"
-              color="error"
-              startIcon={<CloseIcon />}
-              onClick={() => reprovar(r.id)}
+              startIcon={<VisibilityIcon />}
               sx={{ mr: 1 }}
+              component="a"
+              href={`/admin/ver/${r.id}`}
+              target="_blank"
             >
-              Reprovar
+              Verificar
             </Button>
             <Button
               size="small"
