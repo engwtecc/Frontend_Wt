@@ -53,6 +53,7 @@ export default function Admin() {
   //const [confirmarId, setConfirmarId] = useState<string | null>(null);
   const [openConfirm, setOpenConfirm] = useState(false)
   const [idParaExcluir, setIdParaExcluir] = useState<string | null>(null)
+  const pendentes = relatorios.filter(r => r.status === "enviado").length
   
   async function carregar() {
     const response = await api.get("/admin/relatorios", {
@@ -324,7 +325,20 @@ function formatarHoras(valor: number) {
           PDF em Massa
         </Button>
       </Paper>
-      
+      {pendentes > 0 && (
+        <Paper
+          sx={{
+            p: 2,
+            mb: 2,
+            backgroundColor: "#fff3cd",
+            border: "1px solid #ffeeba"
+          }}
+        >
+          <Typography fontWeight="bold">
+            🔔 {pendentes} pendente{pendentes > 1 ? "s" : ""} para aprovação
+          </Typography>
+        </Paper>
+      )}
       {/* TABELA */}
       <Paper sx={{ p: 3 }}>
         <TableContainer>
