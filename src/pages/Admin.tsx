@@ -335,7 +335,7 @@ function formatarHoras(valor: number) {
           }}
         >
           <Typography fontWeight="bold">
-            🔔 {pendentes} pendente{pendentes > 1 ? "s" : ""} para aprovação
+            🔔 {pendentes} pendente{pendentes > 1 ? "s" : ""} de aprovação
           </Typography>
         </Paper>
       )}
