@@ -340,7 +340,18 @@ function formatarHoras(valor: number) {
     </TableHead>
 
     <TableBody>
-      {relatorios.map((r) => (
+      {relatorios
+        .sort((a, b) => {
+          const prioridade = {
+            enviado: 1,
+            reprovado: 2,
+            rascunho: 3,
+            aprovado: 4,
+          }
+      
+          return (prioridade[a.status] || 99) - (prioridade[b.status] || 99)
+        })
+        .map((r) => (
         <TableRow key={r.id} hover>
           <TableCell>{r.data}</TableCell>
           <TableCell>{r.colaborador_nome}</TableCell>
