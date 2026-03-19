@@ -341,6 +341,13 @@ function formatarHoras(valor: number) {
 
     <TableBody>
       {relatorios
+        .filter((r) => {
+          // Se NÃO estiver filtrando status → esconde aprovados
+          if (!status) return r.status !== "aprovado"
+      
+          // Se estiver filtrando → mostra tudo
+          return true
+        })
         .sort((a, b) => {
           const prioridade = {
             enviado: 1,
