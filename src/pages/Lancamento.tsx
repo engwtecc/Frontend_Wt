@@ -456,6 +456,7 @@ async function cancelarEnvio() {
   color="secondary"
   sx={{ ml: 2 }}
   onClick={preencherAutomatico}
+  disabled={blocos.length > 0}
 >
   Preenchimento Automático
 </Button>
