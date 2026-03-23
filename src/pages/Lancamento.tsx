@@ -385,26 +385,19 @@ async function cancelarEnvio() {
           Usuário: <strong>{usuario?.nome}</strong>
         </Typography>
 
-        <TextField
-          type="date"
-          label="Data do Relatório"
-          value={data}
-          onChange={(e) => setData(e.target.value)}
-          InputLabelProps={{ shrink: true }}
-          sx={{ mt: 2 }}
-        />
-        <Typography
-          sx={{
-            mt: 1,
-            fontWeight: "bold",
-            color:
-              getDiaSemana(data) === "Sábado" || getDiaSemana(data) === "Domingo"
-                ? "warning.main"
-                : "text.primary"
-          }}
-        >
-          {getDiaSemana(data)}
-        </Typography>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <TextField
+            type="date"
+            label="Data do Relatório"
+            value={data}
+            onChange={(e) => setData(e.target.value)}
+            InputLabelProps={{ shrink: true }}
+          />
+        
+          <Typography>
+            {getDiaSemana(data)}
+          </Typography>
+        </div>
         <FormControlLabel
         control={
           <Checkbox
