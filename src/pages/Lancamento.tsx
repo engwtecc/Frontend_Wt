@@ -159,6 +159,21 @@ export default function Lancamento() {
     const dia = String(date.getDate()).padStart(2, "0")
     return `${ano}-${mes}-${dia}`
   }
+
+  function getDiaSemana(data: string) {
+    const dias = [
+      "Domingo",
+      "Segunda-feira",
+      "Terça-feira",
+      "Quarta-feira",
+      "Quinta-feira",
+      "Sexta-feira",
+      "Sábado"
+    ]
+  
+    const d = new Date(data + "T00:00:00")
+    return dias[d.getDay()]
+  }
   async function carregarProjetos(){
     const res = await api.get("/projetos")
     setProjetos(res.data)
@@ -378,6 +393,9 @@ async function cancelarEnvio() {
           InputLabelProps={{ shrink: true }}
           sx={{ mt: 2 }}
         />
+        <Typography sx={{ mt: 1, fontWeight: "bold" }}>
+          {getDiaSemana(data)}
+        </Typography>
         <FormControlLabel
         control={
           <Checkbox
