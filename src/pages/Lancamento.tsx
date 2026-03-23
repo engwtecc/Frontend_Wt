@@ -462,14 +462,7 @@ async function cancelarEnvio() {
   }
   label="Dia de Folga"
 />
-        <Button
-          variant="outlined"
-          color="error"
-          sx={{ mt: 2, ml: 2 }}
-          onClick={logout}
-        >
-          Logout
-        </Button>
+        
       </Paper>
 <Button
   variant="outlined"
