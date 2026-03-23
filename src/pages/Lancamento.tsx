@@ -393,7 +393,16 @@ async function cancelarEnvio() {
           InputLabelProps={{ shrink: true }}
           sx={{ mt: 2 }}
         />
-        <Typography sx={{ mt: 1, fontWeight: "bold" }}>
+        <Typography
+          sx={{
+            mt: 1,
+            fontWeight: "bold",
+            color:
+              getDiaSemana(data) === "Sábado" || getDiaSemana(data) === "Domingo"
+                ? "warning.main"
+                : "text.primary"
+          }}
+        >
           {getDiaSemana(data)}
         </Typography>
         <FormControlLabel
