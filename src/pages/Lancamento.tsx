@@ -90,13 +90,71 @@ export default function Lancamento() {
   }, [data, usuario]);
   
   async function preencherAutomatico() {
-  
+
     if (!usuario) return
   
     try {
       const hoje = new Date(data)
-      const diaSemana = hoje.getDay() // 0=dom,
-   }   
+      const diaSemana = hoje.getDay() // 0=dom, 1=seg ... 5=sex
+  
+      let dataBase = new Date(hoje)
+  
+      // 👉 Segunda → volta 3 dias (sexta)
+      if (diaSemana === 1) {
+        dataBase.setDate(hoje.getDate() - 3)
+      } else {
+        dataBase.setDate(hoje.getDate() - 1)
+      }
+  
+      const dataAnterior = dataBase.toISOString().split("T")[0]
+  
+      // 🔥 BUSCA DIA ANTERIOR
+      const response = await api.get(`/lancamento/${usuario.id}/${dataAnterior}`)
+  
+      const blocosOrigem = response.data.blocos || []
+  
+      if (blocosOrigem.length === 0) {
+        alert("Não há apontamentos no dia anterior")
+        return
+      }
+  
+      // 🔥 MONTA NOVOS BLOCOS
+      const novosBlocos = blocosOrigem.map((b: any) => {
+  
+        let inicio = b.hora_inicio.slice(11,16)
+        let fim = b.hora_fim.slice(11,16)
+  
+        // 👉 REGRA DA SEXTA
+        if (diaSemana === 5 && fim === "18:00") {
+          fim = "17:00"
+        }
+  
+        return {
+          projeto_id: b.projeto_id,
+          tipo_id: b.tipo_atividade_id,
+          inicio: `${data}T${inicio}:00`,
+          fim: `${data}T${fim}:00`,
+          descricao: b.descricao
+        }
+      })
+  
+      // 🔥 ENVIA PARA BACKEND
+      await api.post("/lancamento", {
+        colaborador_id: usuario.id,
+        data,
+        feriado,
+        blocos: novosBlocos
+      })
+  
+      alert("Apontamentos copiados com sucesso!")
+  
+      carregar()
+  
+    } catch (error: any) {
+      console.error(error)
+      alert(error.response?.data?.detail || "Erro ao copiar apontamentos")
+    }
+  }   
   async function carregarProjetos(){
     const res = await api.get("/projetos")
     setProjetos(res.data)
