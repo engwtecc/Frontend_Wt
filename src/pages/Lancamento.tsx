@@ -106,8 +106,14 @@ export default function Lancamento() {
         dataBase.setDate(hoje.getDate() - 1)
       }
   
-      const dataAnterior = dataBase.toISOString().split("T")[0]
-  
+      function formatarDataLocal(date: Date) {
+        const ano = date.getFullYear()
+        const mes = String(date.getMonth() + 1).padStart(2, "0")
+        const dia = String(date.getDate()).padStart(2, "0")
+        return `${ano}-${mes}-${dia}`
+      }
+      const dataAnterior = formatarDataLocal(dataBase)
+      
       // 🔥 BUSCA DIA ANTERIOR
       const response = await api.get(`/lancamento/${usuario.id}/${dataAnterior}`)
   
