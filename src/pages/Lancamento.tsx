@@ -94,27 +94,22 @@ export default function Lancamento() {
     if (!usuario) return
   
     try {
-      const hoje = new Date(data)
-      const diaSemana = hoje.getDay() // 0=dom, 1=seg ... 5=sex
+      // 🔥 USA A DATA DA TELA (CORRETO)
+      const hoje = new Date(data + "T00:00:00")
+      const diaSemana = hoje.getDay() // 0=dom, 1=seg ... 6=sab
   
       let dataBase = new Date(hoje)
   
-      // 👉 Segunda → volta 3 dias (sexta)
+      // 👉 SEGUNDA → volta para sexta
       if (diaSemana === 1) {
         dataBase.setDate(hoje.getDate() - 3)
       } else {
         dataBase.setDate(hoje.getDate() - 1)
       }
   
-      function formatarDataLocal(date: Date) {
-        const ano = date.getFullYear()
-        const mes = String(date.getMonth() + 1).padStart(2, "0")
-        const dia = String(date.getDate()).padStart(2, "0")
-        return `${ano}-${mes}-${dia}`
-      }
+      // 🔥 FORMATA SEM UTC (CRÍTICO)
       const dataAnterior = formatarDataLocal(dataBase)
-      
-      // 🔥 BUSCA DIA ANTERIOR
+  
       const response = await api.get(`/lancamento/${usuario.id}/${dataAnterior}`)
   
       const blocosOrigem = response.data.blocos || []
@@ -124,13 +119,12 @@ export default function Lancamento() {
         return
       }
   
-      // 🔥 MONTA NOVOS BLOCOS
       const novosBlocos = blocosOrigem.map((b: any) => {
   
         let inicio = b.hora_inicio.slice(11,16)
         let fim = b.hora_fim.slice(11,16)
   
-        // 👉 REGRA DA SEXTA
+        // 👉 REGRA SEXTA
         if (diaSemana === 5 && fim === "18:00") {
           fim = "17:00"
         }
@@ -144,7 +138,6 @@ export default function Lancamento() {
         }
       })
   
-      // 🔥 ENVIA PARA BACKEND
       await api.post("/lancamento", {
         colaborador_id: usuario.id,
         data,
@@ -157,10 +150,9 @@ export default function Lancamento() {
       carregar()
   
     } catch (error: any) {
-      console.error(error)
       alert(error.response?.data?.detail || "Erro ao copiar apontamentos")
     }
-  }   
+  }  
   async function carregarProjetos(){
     const res = await api.get("/projetos")
     setProjetos(res.data)
