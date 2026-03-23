@@ -392,9 +392,19 @@ async function cancelarEnvio() {
             value={data}
             onChange={(e) => setData(e.target.value)}
             InputLabelProps={{ shrink: true }}
+            sx={{ mt: 2 }}
           />
         
-          <Typography>
+          <Typography
+            sx={{
+              mt: 1,
+              fontWeight: "bold",
+              color:
+                getDiaSemana(data) === "Sábado" || getDiaSemana(data) === "Domingo"
+                  ? "warning.main"
+                  : "text.primary"
+            }}
+          >
             {getDiaSemana(data)}
           </Typography>
         </div>
