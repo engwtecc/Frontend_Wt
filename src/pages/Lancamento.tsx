@@ -88,7 +88,15 @@ export default function Lancamento() {
     carregarProjetos();
     carregarTipos();
   }, [data, usuario]);
-
+  
+  async function preencherAutomatico() {
+  
+    if (!usuario) return
+  
+    try {
+      const hoje = new Date(data)
+      const diaSemana = hoje.getDay() // 0=dom,
+      
   async function carregarProjetos(){
     const res = await api.get("/projetos")
     setProjetos(res.data)
@@ -381,7 +389,14 @@ async function cancelarEnvio() {
 >
   Meus Relatórios
 </Button>
-
+<Button
+  variant="contained"
+  color="secondary"
+  sx={{ ml: 2 }}
+  onClick={preencherAutomatico}
+>
+  Preenchimento Automático
+</Button>
       {/* FORM BLOCO */}
       <BlocoForm
   onAdd={adicionarBloco}
