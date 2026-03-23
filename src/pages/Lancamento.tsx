@@ -153,6 +153,12 @@ export default function Lancamento() {
       alert(error.response?.data?.detail || "Erro ao copiar apontamentos")
     }
   }  
+  function formatarDataLocal(date: Date) {
+    const ano = date.getFullYear()
+    const mes = String(date.getMonth() + 1).padStart(2, "0")
+    const dia = String(date.getDate()).padStart(2, "0")
+    return `${ano}-${mes}-${dia}`
+  }
   async function carregarProjetos(){
     const res = await api.get("/projetos")
     setProjetos(res.data)
