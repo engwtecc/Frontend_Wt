@@ -96,7 +96,7 @@ export default function Lancamento() {
     try {
       const hoje = new Date(data)
       const diaSemana = hoje.getDay() // 0=dom,
-      
+   }   
   async function carregarProjetos(){
     const res = await api.get("/projetos")
     setProjetos(res.data)
