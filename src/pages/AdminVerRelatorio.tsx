@@ -74,8 +74,6 @@ export default function AdminVerRelatorio() {
         <Typography variant="h5" gutterBottom>
           Relatório do Dia {relatorio.data}
         </Typography>
-
-        <Typography>Status: {relatorio.status}</Typography>
         <Box sx={{ mb: 2, display: "flex", gap: 2 }}>
           
           {relatorio.status === "enviado" && (
@@ -99,6 +97,7 @@ export default function AdminVerRelatorio() {
           )}
         
         </Box>
+        <Typography>Status: {relatorio.status}</Typography>
         {relatorio.feriado && (
           <Typography
             sx={{
