@@ -29,6 +29,33 @@ export default function AdminVerRelatorio() {
     carregar();
   }, [id]);
 
+  async function aprovarRelatorio() {
+    try {
+      await api.put(`/aprovar/${id}`)
+      alert("Relatório aprovado com sucesso")
+      carregarRelatorio()
+    } catch (error: any) {
+      alert(error.response?.data?.detail || "Erro ao aprovar")
+    }
+  }
+  
+  async function reprovarRelatorio() {
+    const motivo = prompt("Informe o motivo da reprovação:")
+  
+    if (!motivo) return
+  
+    try {
+      await api.put(`/reprovar/${id}`, {
+        motivo: motivo
+      })
+  
+      alert("Relatório reprovado")
+      carregarRelatorio()
+    } catch (error: any) {
+      alert(error.response?.data?.detail || "Erro ao reprovar")
+    }
+  }
+  
   function formatarHoras(valor: number) {
     const horas = Math.floor(valor);
     const minutos = Math.round((valor - horas) * 60);
@@ -49,6 +76,29 @@ export default function AdminVerRelatorio() {
         </Typography>
 
         <Typography>Status: {relatorio.status}</Typography>
+        <Box sx={{ mb: 2, display: "flex", gap: 2 }}>
+          
+          {relatorio.status === "enviado" && (
+            <Button
+              variant="contained"
+              color="success"
+              onClick={aprovarRelatorio}
+            >
+              Aprovar
+            </Button>
+          )}
+        
+          {(relatorio.status === "enviado" || relatorio.status === "aprovado") && (
+            <Button
+              variant="contained"
+              color="error"
+              onClick={reprovarRelatorio}
+            >
+              Reprovar
+            </Button>
+          )}
+        
+        </Box>
         {relatorio.feriado && (
           <Typography
             sx={{
