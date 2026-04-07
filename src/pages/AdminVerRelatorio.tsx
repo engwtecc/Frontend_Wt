@@ -17,7 +17,6 @@ export default function AdminVerRelatorio() {
   const [relatorio, setRelatorio] = useState<any>(null);
   const [imagemAberta, setImagemAberta] = useState<string | null>(null);
 
-  useEffect(() => {
     async function carregarRelatorio() {
       try {
         const response = await api.get(`/admin/relatorio/${id}`);
