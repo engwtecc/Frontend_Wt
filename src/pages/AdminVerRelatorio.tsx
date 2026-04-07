@@ -56,6 +56,16 @@ export default function AdminVerRelatorio() {
       alert(error.response?.data?.detail || "Erro ao reprovar")
     }
   }
+
+  function formatarHora(dataHora: string) {
+    if (!dataHora) return ""
+  
+    const date = new Date(dataHora)
+    const h = String(date.getHours()).padStart(2, "0")
+    const m = String(date.getMinutes()).padStart(2, "0")
+  
+    return `${h}:${m}`
+  }
   
   function formatarHoras(valor: number) {
     const horas = Math.floor(valor);
@@ -162,8 +172,8 @@ export default function AdminVerRelatorio() {
             <TableBody>
               {relatorio.blocos.map((b: any) => (
                 <TableRow key={b.id}>
-                  <TableCell>{b.hora_inicio}</TableCell>
-                  <TableCell>{b.hora_fim}</TableCell>
+                  <TableCell>{formatarHora(b.hora_inicio)}</TableCell>
+                  <TableCell>{formatarHora(b.hora_fim)}</TableCell>
                   <TableCell>{b.projeto_nome}</TableCell>
                   <TableCell>{b.tipo_nome}</TableCell>
                   <TableCell>{b.descricao}</TableCell>
