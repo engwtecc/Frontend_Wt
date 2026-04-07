@@ -11,13 +11,14 @@ import {
   TableContainer,
   //Divider
 } from "@mui/material";
+import { Box, Button } from "@mui/material";
 export default function AdminVerRelatorio() {
   const { id } = useParams();
   const [relatorio, setRelatorio] = useState<any>(null);
   const [imagemAberta, setImagemAberta] = useState<string | null>(null);
 
   useEffect(() => {
-    async function carregar() {
+    async function carregarRelatorio() {
       try {
         const response = await api.get(`/admin/relatorio/${id}`);
         setRelatorio(response.data);
@@ -25,9 +26,10 @@ export default function AdminVerRelatorio() {
         console.error("Erro ao carregar relatório:", error);
       }
     }
-
-    carregar();
-  }, [id]);
+    
+    useEffect(() => {
+      carregarRelatorio();
+    }, [id]);
 
   async function aprovarRelatorio() {
     try {
@@ -147,42 +149,30 @@ export default function AdminVerRelatorio() {
         <Typography variant="h6">Atividades</Typography>
 
         <TableContainer>
-  <Table size="small">
-    <TableHead>
-      <TableRow>
-        <TableCell><strong>Início</strong></TableCell>
-        <TableCell><strong>Fim</strong></TableCell>
-        <TableCell><strong>Projeto</strong></TableCell>
-        <TableCell><strong>Tipo</strong></TableCell>
-        <TableCell><strong>Descrição</strong></TableCell>
-      </TableRow>
-    </TableHead>
-
-    <TableBody>
-      {relatorio.blocos.map((b: any) => (
-        <TableRow key={b.id} hover>
-          <TableCell>
-            {new Date(b.hora_inicio).toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
-          </TableCell>
-
-          <TableCell>
-            {new Date(b.hora_fim).toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
-          </TableCell>
-
-          <TableCell>{b.projeto_nome}</TableCell>
-          <TableCell>{b.tipo_nome}</TableCell>
-          <TableCell>{b.descricao}</TableCell>
-        </TableRow>
-      ))}
-    </TableBody>
-  </Table>
-</TableContainer>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell><strong>Início</strong></TableCell>
+                <TableCell><strong>Fim</strong></TableCell>
+                <TableCell><strong>Projeto</strong></TableCell>
+                <TableCell><strong>Tipo</strong></TableCell>
+                <TableCell><strong>Descrição</strong></TableCell>
+              </TableRow>
+            </TableHead>
+        
+            <TableBody>
+              {relatorio.blocos.map((b: any) => (
+                <TableRow key={b.id}>
+                  <TableCell>{b.hora_inicio}</TableCell>
+                  <TableCell>{b.hora_fim}</TableCell>
+                  <TableCell>{b.projeto_nome}</TableCell>
+                  <TableCell>{b.tipo_nome}</TableCell>
+                  <TableCell>{b.descricao}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Paper>
 
       {/* RESUMO */}
