@@ -195,13 +195,20 @@ async function confirmarExclusao(id: string) {
     alert(error.response?.data?.detail || "Erro ao excluir")
   }
 }*/
+
 function formatarHoras(valor: number) {
-  const totalMinutos = Math.round(valor * 60)
+  const negativo = valor < 0
+
+  const totalMinutos = Math.round(Math.abs(valor) * 60)
+
   const horas = Math.floor(totalMinutos / 60)
   const minutos = totalMinutos % 60
-  return `${horas.toString().padStart(2,"0")}:${minutos.toString().padStart(2,"0")}`
-}
 
+  const hh = String(horas).padStart(2, "0")
+  const mm = String(minutos).padStart(2, "0")
+
+  return `${negativo ? "-" : ""}${hh}:${mm}`
+}
 
 
 
