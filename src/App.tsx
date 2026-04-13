@@ -8,6 +8,7 @@ import Projetos from "./pages/Projetos";
 import MeusRelatorios from "./pages/MeusRelatorios";
 import Layout from "./layout/Layout";
 import AdminVerRelatorio from "./pages/AdminVerRelatorio";
+import BancoExtrato from "./pages/BancoExtrato"
 
 function PrivateRoute({ children, perfil }: any) {
   const { usuario, loading } = useAuth();
@@ -41,7 +42,7 @@ function App() {
         <Route path="/" element={<Lancamento />} />
         <Route path="/lancamento" element={<Lancamento />} />
         <Route path="/meus-relatorios" element={<MeusRelatorios />} />
-
+        <Route path="/admin/banco-extrato" element={<BancoExtrato />} />
         {/* PÁGINAS ADMIN */}
         <Route
           path="/admin"
