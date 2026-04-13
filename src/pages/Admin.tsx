@@ -331,6 +331,16 @@ function formatarHoras(valor: number) {
         >
           PDF em Massa
         </Button>
+        <Button
+        variant="contained"
+        color="info"
+        sx={{ ml: 2 }}
+        onClick={() => {
+          window.open("/admin/banco-extrato", "_blank")
+        }}
+      >
+        Extrato Banco
+      </Button>
       </Paper>
       {pendentes > 0 && (
         <Paper
