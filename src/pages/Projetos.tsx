@@ -20,14 +20,22 @@ export default function Projetos() {
   const [nome, setNome] = useState("");
   const [cliente, setCliente] = useState("");
   const [editandoId, setEditandoId] = useState<string | null>(null);
+  const [mostrarInativos, setMostrarInativos] = useState(false);
+  
   async function carregar() {
-    const response = await api.get("/projetos");
+  
+    const response = await api.get("/projetos", {
+      params: {
+        inativos: mostrarInativos
+      }
+    });
+  
     setProjetos(response.data);
   }
 
   useEffect(() => {
     carregar();
-  }, []);
+  }, [mostrarInativos]);
 
   async function salvar() {
     if (!nome || !cliente) {
@@ -69,6 +77,15 @@ export default function Projetos() {
     carregar();
   }
 
+  async function reativar(id: string) {
+  
+    if (!confirm("Deseja reativar este projeto?")) return;
+  
+    await api.put(`/projetos/${id}/reativar`);
+  
+    carregar();
+  }
+  
   return (
     <>
 
@@ -89,12 +106,24 @@ export default function Projetos() {
           sx={{ mb: 2 }}
         />
 
-        <Button
-          variant="contained"
-          onClick={editandoId ? editarProjeto : salvar}
-        >
-          {editandoId ? "Atualizar Projeto" : "Salvar Projeto"}
-        </Button>
+        <div style={{ display: "flex", gap: 10 }}>
+        
+          <Button
+            variant="contained"
+            onClick={editandoId ? editarProjeto : salvar}
+          >
+            {editandoId ? "Atualizar Projeto" : "Salvar Projeto"}
+          </Button>
+        
+          <Button
+            variant="outlined"
+            color={mostrarInativos ? "warning" : "primary"}
+            onClick={() => setMostrarInativos(!mostrarInativos)}
+          >
+            {mostrarInativos ? "Ver Projetos Ativos" : "Projetos Inativos"}
+          </Button>
+        
+        </div>
       </Paper>
       <Paper sx={{ p: 3 }}>
   <Typography variant="h6" sx={{ mb: 2 }}>
@@ -129,13 +158,27 @@ export default function Projetos() {
                 Editar
               </Button>
             
-              <Button
-                size="small"
-                color="warning"
-                onClick={() => inativar(p.id)}
-              >
-                Inativar
-              </Button>
+              {mostrarInativos ? (
+              
+                <Button
+                  size="small"
+                  color="success"
+                  onClick={() => reativar(p.id)}
+                >
+                  Reativar
+                </Button>
+              
+              ) : (
+              
+                <Button
+                  size="small"
+                  color="warning"
+                  onClick={() => inativar(p.id)}
+                >
+                  Inativar
+                </Button>
+              
+              )}
             
             </TableCell>
           </TableRow>
