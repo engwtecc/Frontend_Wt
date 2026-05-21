@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
 import { Paper, Typography, Dialog } from "@mui/material";
@@ -14,9 +14,11 @@ import {
 import { Box, Button } from "@mui/material";
 export default function AdminVerRelatorio() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [relatorio, setRelatorio] = useState<any>(null);
   const [imagemAberta, setImagemAberta] = useState<string | null>(null);
-
+  const [pendentes, setPendentes] = useState<any[]>([]);
+  
     async function carregarRelatorio() {
       try {
         const response = await api.get(`/admin/relatorio/${id}`);
@@ -25,16 +27,30 @@ export default function AdminVerRelatorio() {
         console.error("Erro ao carregar relatório:", error);
       }
     }
+    async function carregarPendentes() {
+      try {
     
+        const response = await api.get("/admin/relatorios", {
+          params: {
+            status: "enviado"
+          }
+        });
+    
+        setPendentes(response.data);
+    
+      } catch (error) {
+        console.error("Erro ao carregar pendentes:", error);
+      }
+    }
     useEffect(() => {
       carregarRelatorio();
+      carregarPendentes();
     }, [id]);
 
   async function aprovarRelatorio() {
     try {
       await api.put(`/aprovar/${id}`)
-      alert("Relatório aprovado com sucesso")
-      carregarRelatorio()
+      irParaProximoRelatorio()
     } catch (error: any) {
       alert(error.response?.data?.detail || "Erro ao aprovar")
     }
@@ -49,14 +65,32 @@ export default function AdminVerRelatorio() {
       await api.put(`/reprovar/${id}`, {
         motivo: motivo
       })
-  
-      alert("Relatório reprovado")
-      carregarRelatorio()
+      
+      irParaProximoRelatorio()
     } catch (error: any) {
       alert(error.response?.data?.detail || "Erro ao reprovar")
     }
   }
-
+  function irParaProximoRelatorio() {
+  
+    const indexAtual = pendentes.findIndex(
+      (r) => r.id === id
+    );
+  
+    const proximo = pendentes[indexAtual + 1];
+  
+    if (proximo) {
+  
+      navigate(`/admin/ver/${proximo.id}`);
+  
+    } else {
+  
+      alert("Não há mais relatórios pendentes.");
+  
+      navigate("/admin");
+    }
+  }
+  
   function formatarHora(dataHora: string) {
     if (!dataHora) return ""
   
@@ -84,6 +118,18 @@ export default function AdminVerRelatorio() {
       <Paper sx={{ p: 3, mb: 3 }}>
         <Typography variant="h5" gutterBottom>
           Relatório do Dia {relatorio.data}
+        </Typography>
+        <Typography
+          variant="caption"
+          sx={{
+            display: "block",
+            mb: 2,
+            color: "text.secondary"
+          }}
+        >
+          Pendente {
+            pendentes.findIndex((r) => r.id === id) + 1
+          } de {pendentes.length}
         </Typography>
         <Box sx={{ mb: 2, display: "flex", gap: 2 }}>
           
