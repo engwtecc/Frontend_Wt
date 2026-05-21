@@ -45,10 +45,12 @@ export default function Projetos() {
     carregar();
   }
 
-  async function excluir(id: string) {
-    if (!confirm("Deseja excluir este projeto?")) return;
-
-    await api.delete(`/projetos/${id}`);
+  async function inativar(id: string) {
+  
+    if (!confirm("Deseja inativar este projeto?")) return;
+  
+    await api.put(`/projetos/${id}/inativar`);
+  
     carregar();
   }
 
@@ -99,11 +101,19 @@ export default function Projetos() {
             <TableCell align="right">
               <Button
                 size="small"
-                color="error"
-                onClick={() => excluir(p.id)}
+                color="primary"
               >
-                Excluir
+                Editar
               </Button>
+            
+              <Button
+                size="small"
+                color="warning"
+                onClick={() => inativar(p.id)}
+              >
+                Inativar
+              </Button>
+            
             </TableCell>
           </TableRow>
         ))}
