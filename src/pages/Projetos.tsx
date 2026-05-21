@@ -19,7 +19,7 @@ export default function Projetos() {
   const [projetos, setProjetos] = useState<any[]>([]);
   const [nome, setNome] = useState("");
   const [cliente, setCliente] = useState("");
-
+  const [editandoId, setEditandoId] = useState<string | null>(null);
   async function carregar() {
     const response = await api.get("/projetos");
     setProjetos(response.data);
@@ -45,6 +45,21 @@ export default function Projetos() {
     carregar();
   }
 
+  async function editarProjeto() {
+  
+    if (!editandoId) return;
+  
+    await api.put(`/projetos/${editandoId}`, {
+      nome,
+      cliente,
+    });
+  
+    setNome("");
+    setCliente("");
+    setEditandoId(null);
+  
+    carregar();
+  }
   async function inativar(id: string) {
   
     if (!confirm("Deseja inativar este projeto?")) return;
@@ -74,8 +89,11 @@ export default function Projetos() {
           sx={{ mb: 2 }}
         />
 
-        <Button variant="contained" onClick={salvar}>
-          Salvar Projeto
+        <Button
+          variant="contained"
+          onClick={editandoId ? editarProjeto : salvar}
+        >
+          {editandoId ? "Atualizar Projeto" : "Salvar Projeto"}
         </Button>
       </Paper>
       <Paper sx={{ p: 3 }}>
@@ -102,6 +120,11 @@ export default function Projetos() {
               <Button
                 size="small"
                 color="primary"
+                onClick={() => {
+                  setNome(p.nome);
+                  setCliente(p.cliente);
+                  setEditandoId(p.id);
+                }}
               >
                 Editar
               </Button>
