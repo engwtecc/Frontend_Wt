@@ -302,10 +302,12 @@ function formatarHoras(valor: number) {
         
           <Button
             variant="contained"
-            color="info"
-            onClick={() => window.open("/painel-pendencias", "_blank")}
+            color="warning"
+            component={Link}
+            to="/painel-pendencias"
+            sx={{ ml: 2 }}
           >
-            Painel Pendências
+            Pendências
           </Button>
         
         </div>
