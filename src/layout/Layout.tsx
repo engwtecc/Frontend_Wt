@@ -27,6 +27,8 @@ export default function Layout() {
         return "Usuários";
       case "/projetos":
         return "Projetos";
+      case "/ferias":
+        return "Férias de Colaboradores";
       default:
         return "";
     }
@@ -75,6 +77,10 @@ export default function Layout() {
 
                 <Button onClick={() => navigate("/usuarios")}>
                   Usuários
+                </Button>
+
+                <Button onClick={() => navigate("/ferias")}>
+                  Férias
                 </Button>
 
                 <Button onClick={() => navigate("/projetos")}>
