@@ -3,6 +3,7 @@ import { useAuth } from "./context/AuthContext";
 import Lancamento from "./pages/Lancamento";
 import Admin from "./pages/Admin";
 import Usuarios from "./pages/Usuarios";
+import FeriasPage from "./pages/Ferias";
 import Login from "./pages/Login";
 import Projetos from "./pages/Projetos";
 import MeusRelatorios from "./pages/MeusRelatorios";
@@ -80,6 +81,15 @@ function App() {
           element={
             <PrivateRoute perfil="admin">
               <Usuarios />
+            </PrivateRoute>
+          }
+        />
+        
+        <Route
+          path="/ferias"
+          element={
+            <PrivateRoute perfil="admin">
+              <FeriasPage />
             </PrivateRoute>
           }
         />
