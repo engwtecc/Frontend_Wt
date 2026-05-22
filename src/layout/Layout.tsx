@@ -88,7 +88,14 @@ export default function Layout() {
             
                 <Button
                   onClick={handleOpenMenu}
-                  endIcon={<KeyboardArrowDownIcon />}
+                  endIcon={
+                    <KeyboardArrowDownIcon
+                      sx={{
+                        transform: open ? "rotate(180deg)" : "rotate(0deg)",
+                        transition: "0.2s",
+                      }}
+                    />
+                  }
                 >
                   Cadastros
                 </Button>
