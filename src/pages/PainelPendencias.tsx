@@ -107,6 +107,25 @@ export default function PainelPendencias() {
     }
   }
 
+  function dataValida(data: string) {
+  
+    const partes = data.split("-");
+  
+    if (partes.length !== 3) return false;
+  
+    const ano = Number(partes[0]);
+    const mes = Number(partes[1]);
+    const dia = Number(partes[2]);
+  
+    const dt = new Date(ano, mes - 1, dia);
+  
+    return (
+      dt.getFullYear() === ano &&
+      dt.getMonth() === mes - 1 &&
+      dt.getDate() === dia
+    );
+  }
+
   function textoStatus(status: string) {
 
     switch (status) {
@@ -167,7 +186,20 @@ export default function PainelPendencias() {
 
           <Button
             variant="contained"
-            onClick={carregar}
+            onClick={() => {
+          
+              if (!dataValida(dataInicio)) {
+                alert("Data início inválida");
+                return;
+              }
+          
+              if (!dataValida(dataFim)) {
+                alert("Data fim inválida");
+                return;
+              }
+          
+              carregar();
+            }}
           >
             Filtrar
           </Button>
