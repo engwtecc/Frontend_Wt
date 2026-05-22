@@ -8,12 +8,22 @@ import {
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import logo from "../assets/logo.png";
+import { Menu, MenuItem } from "@mui/material";
+import { useState } from "react";
 
 export default function Layout() {
   const location = useLocation();
   const navigate = useNavigate();
   const { usuario, logout } = useAuth();
-
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+  
   function obterTitulo() {
     switch (location.pathname) {
       case "/":
@@ -74,18 +84,43 @@ export default function Layout() {
                 <Button onClick={() => navigate("/admin")}>
                   Admin
                 </Button>
-
-                <Button onClick={() => navigate("/usuarios")}>
-                  Usuários
+            
+                <Button onClick={handleOpenMenu}>
+                  Cadastros
                 </Button>
-
-                <Button onClick={() => navigate("/ferias")}>
-                  Férias
-                </Button>
-
-                <Button onClick={() => navigate("/projetos")}>
-                  Projetos
-                </Button>
+            
+                <Menu
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleCloseMenu}
+                >
+                  <MenuItem
+                    onClick={() => {
+                      navigate("/usuarios");
+                      handleCloseMenu();
+                    }}
+                  >
+                    Usuários
+                  </MenuItem>
+            
+                  <MenuItem
+                    onClick={() => {
+                      navigate("/projetos");
+                      handleCloseMenu();
+                    }}
+                  >
+                    Projetos
+                  </MenuItem>
+            
+                  <MenuItem
+                    onClick={() => {
+                      navigate("/ferias");
+                      handleCloseMenu();
+                    }}
+                  >
+                    Férias
+                  </MenuItem>
+                </Menu>
               </>
             )}
 
