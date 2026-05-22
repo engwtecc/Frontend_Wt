@@ -49,7 +49,7 @@ export default function PainelPendencias() {
 
   async function carregar() {
 
-    const response = await api.get("/admin/pendencias", {
+    const response = await api.get("/pendencias", {
       params: {
         data_inicio: dataInicio,
         data_fim: dataFim,
