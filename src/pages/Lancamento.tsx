@@ -44,6 +44,7 @@ export default function Lancamento() {
   const [fotos, setFotos] = useState<any[]>([]);
   const [imagemAberta, setImagemAberta] = useState<string | null>(null);
   const [folga, setFolga] = useState(false);
+  const [emFerias, setEmFerias] = useState(false);
   const [modalEditar, setModalEditar] = useState(false)
   const [blocoEditando, setBlocoEditando] = useState<any>(null)
   const [projetos, setProjetos] = useState<any[]>([])
@@ -72,6 +73,7 @@ export default function Lancamento() {
       setResumo(response.data.resumo || null);
       setFeriado(response.data.feriado || false);
       setFolga(response.data.folga || false);
+      setEmFerias(response.data.em_ferias || false);
       setMotivoReprovacao(response.data.motivo_reprovacao || "");
       setFotos(response.data.fotos || []);
       setLancamentoId(response.data.id || null);
@@ -395,24 +397,43 @@ async function cancelarEnvio() {
             sx={{ mt: 2 }}
           />
         
-          <Typography
-            sx={{
-              mt: 1,
-              fontWeight: "bold",
-              color:
-                getDiaSemana(data) === "Sábado" || getDiaSemana(data) === "Domingo"
-                  ? "warning.main"
-                  : "text.primary"
-            }}
-          >
-            {getDiaSemana(data)}
-          </Typography>
+        <Typography
+          sx={{
+            mt: 1,
+            fontWeight: "bold",
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            color:
+              getDiaSemana(data) === "Sábado" || getDiaSemana(data) === "Domingo"
+                ? "warning.main"
+                : "text.primary"
+          }}
+        >
+          {getDiaSemana(data)}
+        
+          {emFerias && (
+            <span
+              style={{
+                color: "#d32f2f",
+                fontWeight: "bold",
+                fontSize: "0.95rem"
+              }}
+            >
+              - Colaborador em Férias
+            </span>
+          )}
+        </Typography>
         </div>
         <FormControlLabel
         control={
           <Checkbox
         checked={feriado}
-        disabled={!(status === "rascunho" || status === "reprovado")}
+        disabled={
+          !(status === "rascunho" || status === "reprovado")
+          || folga
+          || emFerias
+        }
         onChange={async (e) => {
         const novoValor = e.target.checked;
 
