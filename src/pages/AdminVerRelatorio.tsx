@@ -119,7 +119,6 @@ export default function AdminVerRelatorio() {
         <Typography variant="h5" gutterBottom>
           Relatório do Dia {relatorio.data}
         </Typography>
-        
         <Typography
           variant="caption"
           sx={{
