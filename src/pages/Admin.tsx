@@ -290,9 +290,24 @@ function formatarHoras(valor: number) {
           <MenuItem value="reprovado">Reprovado</MenuItem>
         </TextField>
         
-                <Button variant="contained" onClick={carregar}>
-          Filtrar
-        </Button>
+        <div style={{ display: "inline-flex", gap: 10, marginLeft: 10 }}>
+        
+          <Button
+            variant="contained"
+            onClick={carregar}
+          >
+            Filtrar
+          </Button>
+        
+          <Button
+            variant="contained"
+            color="info"
+            onClick={() => window.open("/painel-pendencias", "_blank")}
+          >
+            Painel Pendências
+          </Button>
+        
+        </div>
 
         {/* 🔥 SELEÇÃO DE PROJETO ENTRE OS BOTÕES */}
         <TextField
