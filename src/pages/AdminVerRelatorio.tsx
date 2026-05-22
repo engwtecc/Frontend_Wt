@@ -119,9 +119,17 @@ export default function AdminVerRelatorio() {
         <Typography variant="h4" fontWeight="bold">
           {relatorio.colaborador_nome}
         </Typography>
-        <Typography variant="h5" gutterBottom>
+        
+        <Typography
+          variant="h5"
+          sx={{
+            mb: 3,
+            color: "#666"
+          }}
+        >
           Relatório do Dia {relatorio.data}
         </Typography>
+        
         <Typography
           variant="caption"
           sx={{
