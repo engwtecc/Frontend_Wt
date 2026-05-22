@@ -9,6 +9,7 @@ import MeusRelatorios from "./pages/MeusRelatorios";
 import Layout from "./layout/Layout";
 import AdminVerRelatorio from "./pages/AdminVerRelatorio";
 import BancoExtrato from "./pages/BancoExtrato"
+import PainelPendencias from "./pages/PainelPendencias";
 
 function PrivateRoute({ children, perfil }: any) {
   const { usuario, loading } = useAuth();
@@ -61,7 +62,10 @@ function App() {
             </PrivateRoute>
           }
         />
-
+        <Route
+          path="/painel-pendencias"
+          element={<PainelPendencias />}
+        />
         <Route
           path="/projetos"
           element={
