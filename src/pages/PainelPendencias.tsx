@@ -197,7 +197,10 @@ export default function PainelPendencias() {
                   align="center"
                 >
                   <strong>
-                    {new Date(d).getDate()}
+                    {new Date(d).toLocaleDateString("pt-BR", {
+                      day: "2-digit",
+                      month: "2-digit",
+                    })}
                   </strong>
                 </TableCell>
 
