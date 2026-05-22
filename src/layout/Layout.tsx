@@ -10,6 +10,7 @@ import { useAuth } from "../context/AuthContext";
 import logo from "../assets/logo.png";
 import { Menu, MenuItem } from "@mui/material";
 import { useState } from "react";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 export default function Layout() {
   const location = useLocation();
@@ -85,7 +86,10 @@ export default function Layout() {
                   Admin
                 </Button>
             
-                <Button onClick={handleOpenMenu}>
+                <Button
+                  onClick={handleOpenMenu}
+                  endIcon={<KeyboardArrowDownIcon />}
+                >
                   Cadastros
                 </Button>
             
