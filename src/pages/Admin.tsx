@@ -109,7 +109,7 @@ export default function Admin() {
  async function abaterHoras(colaboradorId: string) {
   const valor = parseFloat(horasAbater[colaboradorId]);
 
-  if (!valor || valor <= 0) {
+  if (!valor) {
     alert("Informe um valor válido.");
     return;
   }
