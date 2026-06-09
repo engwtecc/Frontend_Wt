@@ -621,12 +621,14 @@ function formatarHoras(valor: number) {
           </TableCell>
           <TableCell
             sx={{
-              color: a.tipo === "credito_manual"
-                ? "success.main"
-                : "error.main",
+              color:
+                a.tipo === "credito_manual"
+                  ? "green"
+                  : "red",
               fontWeight: "bold"
             }}
           >
+            {a.tipo === "credito_manual" ? "+" : "-"}
             {formatarHoras(
               a.tipo === "credito_manual"
                 ? a.credito
