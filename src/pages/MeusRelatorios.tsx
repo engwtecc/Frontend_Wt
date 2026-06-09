@@ -23,7 +23,11 @@ export default function MeusRelatorios() {
   const [dataInicio, setDataInicio] = useState<any>(null);
   const [dataFim, setDataFim] = useState<any>(null);
   const [status, setStatus] = useState("");
-  const [bancoTotal, setBancoTotal] = useState(0);
+  const [bancoHoras, setBancoHoras] = useState({
+    credito: 0,
+    debito: 0,
+    banco_total: 0
+  });
 
   async function carregar() {
     if (!usuario) return;
@@ -54,7 +58,11 @@ async function carregarBanco() {
     (f: any) => f.id === usuario.id
   );
 
-  setBancoTotal(registro?.banco_total || 0);
+  setBancoHoras({
+    credito: registro?.credito || 0,
+    debito: registro?.debito || 0,
+    banco_total: registro?.banco_total || 0
+  });
 }
 
 function statusChip(status: string) {
@@ -137,17 +145,37 @@ function formatarHoras(valor: number) {
           Filtrar
         </Button>
       </Paper>
-      <Paper
-        sx={{
-          p: 2,
-          mb: 3,
-          textAlign: "center",
-          fontWeight: "bold",
-          fontSize: 20,
-          color: bancoTotal >= 0 ? "green" : "red"
-        }}
-      >
-        Banco de Horas Atual: {formatarHoras(bancoTotal)}
+      <Paper sx={{ p: 2, mb: 3 }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 8,
+            fontSize: 18,
+            fontWeight: "bold"
+          }}
+        >
+          <div style={{ color: "green" }}>
+            Créditos: +{formatarHoras(bancoHoras.credito).replace("+", "")}
+          </div>
+      
+          <div style={{ color: "red" }}>
+            Débitos: -{formatarHoras(bancoHoras.debito).replace("+", "")}
+          </div>
+      
+          <hr />
+      
+          <div
+            style={{
+              color:
+                bancoHoras.banco_total >= 0
+                  ? "green"
+                  : "red"
+            }}
+          >
+            Saldo Atual: {formatarHoras(bancoHoras.banco_total)}
+          </div>
+        </div>
       </Paper>
       {/* TABELA */}
       <Paper sx={{ p: 3 }}>
