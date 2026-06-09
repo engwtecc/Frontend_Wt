@@ -152,7 +152,7 @@ function formatarHoras(valor: number) {
             flexDirection: "column",
             gap: 8,
             fontSize: 18,
-            fontWeight: "bold"
+            //fontWeight: "bold"
           }}
         >
           <div style={{ color: "green" }}>
@@ -170,7 +170,9 @@ function formatarHoras(valor: number) {
               color:
                 bancoHoras.banco_total >= 0
                   ? "green"
-                  : "red"
+                  : "red",
+              fontWeight: "bold",
+              fontSize: 20
             }}
           >
             Saldo Atual: {formatarHoras(bancoHoras.banco_total)}
