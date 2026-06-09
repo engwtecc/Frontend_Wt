@@ -163,8 +163,14 @@ function formatarHoras(valor: number) {
             Débitos: -{formatarHoras(bancoHoras.debito).replace("+", "")}
           </div>
       
-          <hr />
-      
+          <div
+            style={{
+              borderTop: "2px solid #ddd",
+              marginTop: 10,
+              marginBottom: 10
+            }}
+          />
+                
           <div
             style={{
               color:
