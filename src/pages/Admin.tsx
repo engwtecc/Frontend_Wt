@@ -619,7 +619,14 @@ function formatarHoras(valor: number) {
               ? "Inclusão"
               : "Abatimento"}
           </TableCell>
-          <TableCell>
+          <TableCell
+            sx={{
+              color: a.tipo === "credito_manual"
+                ? "success.main"
+                : "error.main",
+              fontWeight: "bold"
+            }}
+          >
             {formatarHoras(
               a.tipo === "credito_manual"
                 ? a.credito
