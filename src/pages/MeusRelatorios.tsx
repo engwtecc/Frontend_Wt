@@ -23,6 +23,7 @@ export default function MeusRelatorios() {
   const [dataInicio, setDataInicio] = useState<any>(null);
   const [dataFim, setDataFim] = useState<any>(null);
   const [status, setStatus] = useState("");
+  const [bancoTotal, setBancoTotal] = useState(0);
 
   async function carregar() {
     if (!usuario) return;
@@ -41,7 +42,20 @@ export default function MeusRelatorios() {
 
   useEffect(() => {
     carregar();
+    carregarBanco();
   }, []);
+
+async function carregarBanco() {
+  if (!usuario) return;
+
+  const response = await api.get("/admin/banco-total");
+
+  const registro = response.data.find(
+    (f: any) => f.id === usuario.id
+  );
+
+  setBancoTotal(registro?.banco_total || 0);
+}
 
 function statusChip(status: string) {
   const estiloPadrao = {
@@ -68,7 +82,16 @@ function statusChip(status: string) {
   }
 }
 
+function formatarHoras(valor: number) {
+  const negativo = valor < 0;
 
+  const totalMinutos = Math.round(Math.abs(valor) * 60);
+
+  const horas = Math.floor(totalMinutos / 60);
+  const minutos = totalMinutos % 60;
+
+  return `${negativo ? "-" : "+"}${String(horas).padStart(2, "0")}:${String(minutos).padStart(2, "0")}`;
+}
   return (
     <>
 
@@ -114,7 +137,18 @@ function statusChip(status: string) {
           Filtrar
         </Button>
       </Paper>
-
+      <Paper
+        sx={{
+          p: 2,
+          mb: 3,
+          textAlign: "center",
+          fontWeight: "bold",
+          fontSize: 20,
+          color: bancoTotal >= 0 ? "green" : "red"
+        }}
+      >
+        Banco de Horas Atual: {formatarHoras(bancoTotal)}
+      </Paper>
       {/* TABELA */}
       <Paper sx={{ p: 3 }}>
         <table
