@@ -524,18 +524,6 @@ function formatarHoras(valor: number) {
             <TextField
               size="small"
               placeholder="HH:MM"
-              <TextField
-                size="small"
-                placeholder="Observação"
-                value={observacoes[f.id] || ""}
-                onChange={(e) =>
-                  setObservacoes({
-                    ...observacoes,
-                    [f.id]: e.target.value
-                  })
-                }
-                sx={{ width: 250, mr: 1 }}
-              />
               value={horasAbater[f.id] || ""}
               onChange={(e) => {
                 let value = e.target.value.replace(/\D/g, "");
@@ -556,7 +544,18 @@ function formatarHoras(valor: number) {
               }}
               sx={{ width: 90, mr: 1 }}
             />
-
+            <TextField
+              size="small"
+              placeholder="Observação"
+              value={observacoes[f.id] || ""}
+              onChange={(e) =>
+                setObservacoes({
+                  ...observacoes,
+                  [f.id]: e.target.value
+                })
+              }
+              sx={{ width: 250, mr: 1 }}
+            />
             <Button
               size="small"
               variant="contained"
