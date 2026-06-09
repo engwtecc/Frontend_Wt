@@ -120,9 +120,9 @@ export default function Admin() {
   }
 
   try {
-    await api.post("/banco-horas/movimento", {
+    await api.post("/banco-horas/abatimento", {
       colaborador_id: colaboradorId,
-      tipo: "debito",
+      //tipo: "debito",
       horas: horasAbater[colaboradorId],   // string HH:MM
       descricao: observacoes[colaboradorId]
     });
@@ -150,9 +150,9 @@ async function incluirHoras(colaboradorId: string) {
   }
 
   try {
-    await api.post("/banco-horas/movimento", {
+    await api.post("/banco-horas/credito", {
       colaborador_id: colaboradorId,
-      tipo: "credito",
+      //tipo: "credito",
       horas: horasAbater[colaboradorId],
       descricao: observacao
     });
