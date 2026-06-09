@@ -48,7 +48,8 @@ export default function Admin() {
   ///const navigate = useNavigate();
   const [bancoTotal, setBancoTotal] = useState<any[]>([]);
   const [horasAbater, setHorasAbater] = useState<{ [key: string]: string }>({});
-  const [modalOpen, setModalOpen] = useState(false);
+  const [observacoes, setObservacoes] = useState<{ [key: string]: string }>({});
+  const [modalOpen, setModalOpen] = useState(false);a
   const [abatimentos, setAbatimentos] = useState<any[]>([]);
   const [colaboradorSelecionado, setColaboradorSelecionado] = useState("");
   //const [confirmarId, setConfirmarId] = useState<string | null>(null);
@@ -113,12 +114,17 @@ export default function Admin() {
     alert("Informe um valor válido.");
     return;
   }
+  if (!observacoes[colaboradorId]?.trim()) {
+    alert("Informe uma observação.");
+    return;
+  }
 
   try {
-    await api.post("/banco-horas/abatimento", {
+    await api.post("/banco-horas/movimento", {
       colaborador_id: colaboradorId,
+      tipo: "debito",
       horas: horasAbater[colaboradorId],   // string HH:MM
-      descricao: "Horas pagas"
+      descricao: observacoes[colaboradorId]
     });
 
     setHorasAbater({ ...horasAbater, [colaboradorId]: "" });
@@ -128,18 +134,57 @@ export default function Admin() {
     alert(error.response?.data?.detail || "Erro ao abater horas");
   }
 } 
+async function incluirHoras(colaboradorId: string) {
+  const valor = parseFloat(horasAbater[colaboradorId]);
+
+  if (!valor) {
+    alert("Informe um valor válido.");
+    return;
+  }
+
+  const observacao = observacoes[colaboradorId];
+
+  if (!observacao?.trim()) {
+    alert("Informe uma observação.");
+    return;
+  }
+
+  try {
+    await api.post("/banco-horas/movimento", {
+      colaborador_id: colaboradorId,
+      tipo: "credito",
+      horas: horasAbater[colaboradorId],
+      descricao: observacao
+    });
+
+    setHorasAbater({
+      ...horasAbater,
+      [colaboradorId]: ""
+    });
+
+    setObservacoes({
+      ...observacoes,
+      [colaboradorId]: ""
+    });
+
+    carregarBancoTotal();
+
+  } catch (error: any) {
+    alert(error.response?.data?.detail || "Erro ao incluir horas");
+  }
+}
 async function abrirHistorico(colaboradorId: string) {
   setColaboradorSelecionado(colaboradorId);
 
   const response = await api.get(
-    `/banco-horas/abatimentos/${colaboradorId}`
+    `/banco-horas/movimentos/${colaboradorId}`
   );
 
   setAbatimentos(response.data);
   setModalOpen(true);
 }
 async function excluirAbatimento(id: string) {
-  await api.delete(`/banco-horas/abatimento/${id}`);
+  await api.delete(`/banco-horas/movimento/${id}`);
 
   abrirHistorico(colaboradorSelecionado);
   carregarBancoTotal();
@@ -165,37 +210,7 @@ async function excluirConfirmado() {
     alert(error.response?.data?.detail || "Erro ao excluir")
   }
 }
-/*async function excluirRelatorio() {
-  if (!confirmarId) return;
 
-  try {
-    await api.delete(`/admin/lancamento/${confirmarId}`);
-
-    setConfirmarId(null);
-
-    carregar(); // recarrega lista
-
-  } catch (error) {
-    alert("Erro ao excluir relatório");
-  }
-}
-async function confirmarExclusao(id: string) {
-
-  const confirmar = window.confirm("Deseja realmente excluir este relatório?")
-
-  if (!confirmar) return
-
-  try {
-    await api.delete(`/admin/lancamento/${id}`)
-
-    alert("Relatório excluído com sucesso")
-
-    carregarRelatorios() // ou sua função de refresh
-
-  } catch (error: any) {
-    alert(error.response?.data?.detail || "Erro ao excluir")
-  }
-}*/
 
 function formatarHoras(valor: number) {
   const negativo = valor < 0
@@ -487,7 +502,7 @@ function formatarHoras(valor: number) {
       <TableRow>
         <TableCell><strong>Funcionário</strong></TableCell>
         <TableCell><strong>Banco Total</strong></TableCell>
-        <TableCell><strong>Abater Horas</strong></TableCell>
+        <TableCell><strong>Movimentação</strong></TableCell>
       </TableRow>
     </TableHead>
 
@@ -509,6 +524,18 @@ function formatarHoras(valor: number) {
             <TextField
               size="small"
               placeholder="HH:MM"
+              <TextField
+                size="small"
+                placeholder="Observação"
+                value={observacoes[f.id] || ""}
+                onChange={(e) =>
+                  setObservacoes({
+                    ...observacoes,
+                    [f.id]: e.target.value
+                  })
+                }
+                sx={{ width: 250, mr: 1 }}
+              />
               value={horasAbater[f.id] || ""}
               onChange={(e) => {
                 let value = e.target.value.replace(/\D/g, "");
@@ -539,7 +566,15 @@ function formatarHoras(valor: number) {
             >
               Abater
             </Button>
-
+            <Button
+              size="small"
+              variant="contained"
+              color="success"
+              onClick={() => incluirHoras(f.id)}
+              sx={{ mr: 1 }}
+            >
+              Incluir
+            </Button>
             <Button
               size="small"
               onClick={() => abrirHistorico(f.id)}
@@ -564,6 +599,8 @@ function formatarHoras(valor: number) {
         <TableCell><strong>Data</strong></TableCell>
         <TableCell><strong>Horas</strong></TableCell>
         <TableCell><strong>Ação</strong></TableCell>
+        <TableCell><strong>Tipo</strong></TableCell>
+        <TableCell><strong>Observação</strong></TableCell>
       </TableRow>
     </TableHead>
 
@@ -573,11 +610,17 @@ function formatarHoras(valor: number) {
           <TableCell>
             {new Date(a.created_at).toLocaleString()}
           </TableCell>
-
+          <TableCell>
+            {a.tipo === "credito"
+              ? "Inclusão"
+              : "Abatimento"}
+          </TableCell>
           <TableCell>
             {formatarHoras(a.horas)}
           </TableCell>
-
+          <TableCell>
+            {a.descricao}
+          </TableCell>
           <TableCell>
             <Button
               size="small"
