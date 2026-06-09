@@ -49,7 +49,7 @@ export default function Admin() {
   const [bancoTotal, setBancoTotal] = useState<any[]>([]);
   const [horasAbater, setHorasAbater] = useState<{ [key: string]: string }>({});
   const [observacoes, setObservacoes] = useState<{ [key: string]: string }>({});
-  const [modalOpen, setModalOpen] = useState(false);a
+  const [modalOpen, setModalOpen] = useState(false);
   const [abatimentos, setAbatimentos] = useState<any[]>([]);
   const [colaboradorSelecionado, setColaboradorSelecionado] = useState("");
   //const [confirmarId, setConfirmarId] = useState<string | null>(null);
@@ -596,10 +596,10 @@ function formatarHoras(valor: number) {
     <TableHead>
       <TableRow>
         <TableCell><strong>Data</strong></TableCell>
-        <TableCell><strong>Horas</strong></TableCell>
-        <TableCell><strong>Ação</strong></TableCell>
         <TableCell><strong>Tipo</strong></TableCell>
+        <TableCell><strong>Horas</strong></TableCell>
         <TableCell><strong>Observação</strong></TableCell>
+        <TableCell><strong>Ação</strong></TableCell>
       </TableRow>
     </TableHead>
 
