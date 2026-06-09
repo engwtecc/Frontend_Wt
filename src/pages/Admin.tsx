@@ -615,7 +615,11 @@ function formatarHoras(valor: number) {
               : "Abatimento"}
           </TableCell>
           <TableCell>
-            {formatarHoras(a.horas)}
+            {formatarHoras(
+              a.tipo === "credito"
+                ? a.credito
+                : a.debito
+            )}
           </TableCell>
           <TableCell>
             {a.descricao}
