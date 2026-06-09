@@ -609,10 +609,15 @@ function formatarHoras(valor: number) {
           <TableCell>
             {new Date(a.created_at).toLocaleString()}
           </TableCell>
-          <TableCell>
-              {a.tipo === "credito_manual"
-                ? "Inclusão"
-                : "Abatimento"}
+          <TableCell
+            sx={{
+              color: a.tipo === "credito_manual" ? "green" : "red",
+              fontWeight: "bold"
+            }}
+          >
+            {a.tipo === "credito_manual"
+              ? "Inclusão"
+              : "Abatimento"}
           </TableCell>
           <TableCell>
             {formatarHoras(
