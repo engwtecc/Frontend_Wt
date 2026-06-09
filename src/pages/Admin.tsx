@@ -610,9 +610,9 @@ function formatarHoras(valor: number) {
             {new Date(a.created_at).toLocaleString()}
           </TableCell>
           <TableCell>
-            {a.tipo === "credito"
-              ? "Inclusão"
-              : "Abatimento"}
+              {a.tipo === "credito_manual"
+                ? "Inclusão"
+                : "Abatimento"}
           </TableCell>
           <TableCell>
             {formatarHoras(
@@ -622,7 +622,7 @@ function formatarHoras(valor: number) {
             )}
           </TableCell>
           <TableCell>
-            {a.descricao}
+            {a.observacao}
           </TableCell>
           <TableCell>
             <Button
