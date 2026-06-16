@@ -348,18 +348,35 @@ function formatarHoras(valor: number) {
           variant="contained"
           color="secondary"
           sx={{ ml: 2 }}
-          onClick={() => {
-            const params = new URLSearchParams();
-
-            if (colaborador) params.append("colaborador_id", colaborador);
-            if (dataInicio) params.append("data_inicio", dataInicio.format("YYYY-MM-DD"));
-            if (dataFim) params.append("data_fim", dataFim.format("YYYY-MM-DD"));
-            if (projetoSelecionado) params.append("projeto_id", projetoSelecionado);
-
-            window.open(
-              `${import.meta.env.VITE_API_URL}/admin/pdf-massa?${params.toString()}`,
-              "_blank"
-            );
+          onClick={async () => {
+            try {
+              const response = await api.get("/admin/pdf-massa", {
+                params: {
+                  colaborador_id: colaborador || undefined,
+                  data_inicio: dataInicio?.format("YYYY-MM-DD"),
+                  data_fim: dataFim?.format("YYYY-MM-DD"),
+                  projeto_id: projetoSelecionado || undefined,
+                },
+                responseType: "blob",
+              });
+          
+              const file = new Blob(
+                [response.data],
+                { type: "application/pdf" }
+              );
+          
+              const fileURL = URL.createObjectURL(file);
+          
+              window.open(fileURL, "_blank");
+          
+            } catch (error: any) {
+          
+              alert(
+                error.response?.data?.detail ||
+                "Nenhum relatório encontrado para os filtros informados."
+              );
+          
+            }
           }}
         >
           PDF em Massa
