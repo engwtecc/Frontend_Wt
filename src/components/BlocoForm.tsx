@@ -23,8 +23,9 @@ export default function BlocoForm({
   data,
 }: Props) {
   const [projetos, setProjetos] = useState<any[]>([]);
+  const [tipos, setTipos] = useState<any[]>([]);
   const [projetoId, setProjetoId] = useState("");
-  const [tipoId, setTipoId] = useState(1);
+  const [tipoId, setTipoId] = useState<number | "">("");
   const [inicio, setInicio] = useState("");
   const [fim, setFim] = useState("");
   const [descricao, setDescricao] = useState("");
@@ -36,6 +37,12 @@ export default function BlocoForm({
       .get("/projetos")
       .then((res) => setProjetos(res.data))
       .catch((err) => console.error("Erro ao carregar projetos", err));
+  
+    api
+      .get("/tipos-atividade")
+      .then((res) => setTipos(res.data))
+      .catch((err) => console.error("Erro ao carregar tipos", err));
+  
   }, []);
 
   async function adicionar() {
@@ -116,13 +123,11 @@ export default function BlocoForm({
           onChange={(e) => setTipoId(Number(e.target.value))}
           sx={{ mb: 2 }}
         >
-          <MenuItem value={1}>Comissionamento</MenuItem>
-          <MenuItem value={2}>Startup</MenuItem>
-          <MenuItem value={3}>Desenvolvimento</MenuItem>
-          <MenuItem value={4}>Deslocamento</MenuItem>
-          <MenuItem value={5}>Refeição</MenuItem>
-          <MenuItem value={6}>Acompanhamento</MenuItem>
-          <MenuItem value={7}>Problema no Campo</MenuItem>
+          {tipos.map((t) => (
+            <MenuItem key={t.id} value={t.id}>
+              {t.nome}
+            </MenuItem>
+          ))}
         </TextField>
 
         {/* DESCRIÇÃO */}
