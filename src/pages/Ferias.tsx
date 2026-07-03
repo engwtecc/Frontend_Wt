@@ -55,6 +55,7 @@ export default function FeriasPage() {
         setFerias(data);
     }
 
+
     // =========================================
     // SALVAR FÉRIAS
     // =========================================
@@ -134,6 +135,27 @@ export default function FeriasPage() {
     }
 
     // =========================================
+    // Parse Data
+    // =========================================
+
+    function parseDateLocal(data: string) {
+        const apenasData = data.slice(0, 10);
+        const [ano, mes, dia] = apenasData.split("-").map(Number);
+        return new Date(ano, mes - 1, dia);
+    }
+    // =========================================
+    // Hoje sem Horas
+    // =========================================
+    function hojeSemHora() {
+        const hoje = new Date();
+    
+        return new Date(
+            hoje.getFullYear(),
+            hoje.getMonth(),
+            hoje.getDate()
+        );
+    }
+    // =========================================
     // STATUS
     // =========================================
 
@@ -142,10 +164,11 @@ export default function FeriasPage() {
         fim: string
     ) {
 
-        const hoje = new Date();
+        const hoje = hojeSemHora();
+        
+        const di = parseDateLocal(inicio);
+        const df = parseDateLocal(fim);
 
-        const di = new Date(inicio);
-        const df = new Date(fim);
 
         if (hoje >= di && hoje <= df) {
             return {
@@ -170,12 +193,15 @@ export default function FeriasPage() {
     // =========================================
     // FORMATAR DATA
     // =========================================
-
     function formatarData(data: string) {
-
-        return new Date(data)
-            .toLocaleDateString("pt-BR");
+        const [ano, mes, dia] = data.split("-");
+        return `${dia}/${mes}/${ano}`;
     }
+    //function formatarData(data: string) {
+
+    //    return new Date(data)
+   //         .toLocaleDateString("pt-BR");
+   // }
 
     // =========================================
     // INIT
@@ -194,19 +220,18 @@ export default function FeriasPage() {
 
     const emFeriasHoje = ferias.filter(f => {
 
-        const hoje = new Date();
+        const hoje = hojeSemHora();
 
         return (
-            hoje >= new Date(f.data_inicio)
-            &&
-            hoje <= new Date(f.data_fim)
+            hoje >= parseDateLocal(f.data_inicio) &&
+            hoje <= parseDateLocal(f.data_fim)
         );
 
     }).length;
 
     const futuras = ferias.filter(f => {
 
-        return new Date(f.data_inicio) > new Date();
+        return parseDateLocal(f.data_inicio) > hojeSemHora();
 
     }).length;
 
